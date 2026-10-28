@@ -18,11 +18,12 @@ SETUP                                                    *pixelscroll-setup*
 >lua
     require("pixelscroll").setup()
 <
-Support is detected at startup with the `ESC _ smooth;? ESC \` query.
-
                                                   *pixelscroll-SMOOTH_SCROLL*
-$SMOOTH_SCROLL      "1" forces pixelscroll on (needed inside herdr, which
-                    does not pass the query to the terminal), "0" off.
+$SMOOTH_SCROLL      "1" turns pixelscroll on; set it where the terminal
+                    supports smooth scroll regions (Ghostty Smooth, directly
+                    or inside the herdr fork). "0" turns it off. When unset,
+                    the terminal is asked with `ESC _ smooth;? ESC \` and
+                    pixelscroll turns on if it answers `smooth;ok`.
 
 ==============================================================================
 COMMANDS                                              *pixelscroll-commands*

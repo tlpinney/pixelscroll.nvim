@@ -71,8 +71,7 @@ the same synchronized update (`'termsync'`).
   `SMOOTH_SCROLL.md`. It installs as a separate app, "Ghostty Smooth", beside
   the official Ghostty.
 - Optional, for [herdr]: the [tlpinney/herdr] fork (branch `smooth-scroll`)
-  relays regions from panes to the terminal. Set `SMOOTH_SCROLL=1` there (see
-  below).
+  relays regions from panes to the terminal.
 
 ## Install
 
@@ -88,22 +87,36 @@ Any other way: put it on `'runtimepath'` and call
 require("pixelscroll").setup()
 ```
 
+Then turn it on where your terminal supports it by setting `SMOOTH_SCROLL=1`
+in the environment, for example in your shell profile when you use Ghostty
+Smooth:
+
+```sh
+export SMOOTH_SCROLL=1
+```
+
+This works both directly in Ghostty Smooth and inside the herdr fork. In other
+terminals leave it unset (or `0`); the regions would be ignored, but the
+mouse wheel would move one line per notch instead of three.
+
 In LazyVim it turns off LazyVim's own line-by-line scroll animation
 (`snacks.nvim` scroll) while active, since that would fight the pixel
 scrolling.
 
 ## Usage
 
-There's nothing to do: scroll with the trackpad. pixelscroll asks the terminal
-at startup whether it supports regions (`ESC _ smooth;? ESC \`, answered with
-`smooth;ok;2`) and only turns on if it does.
+With `SMOOTH_SCROLL=1` set, just scroll with the trackpad.
 
 | | |
 |---|---|
-| `:PixelScroll on` / `off` / `toggle` | turn it on or off, e.g. to compare |
-| `SMOOTH_SCROLL=1` | force on (needed inside herdr, which doesn't pass the query to the terminal) |
-| `SMOOTH_SCROLL=0` | force off |
+| `SMOOTH_SCROLL=1` | turn it on |
+| `SMOOTH_SCROLL=0` or unset | off (unset: on only if the terminal answers the query below) |
+| `:PixelScroll on` / `off` / `toggle` | turn it on or off in a running Neovim, e.g. to compare |
 | `require("pixelscroll").status()` | `"≈ smooth"` while active, for a statusline |
+
+When `SMOOTH_SCROLL` is unset, pixelscroll also asks the terminal at startup
+(`ESC _ smooth;? ESC \`) and turns on if it answers `smooth;ok`. Terminals
+that don't know the query ignore it.
 
 Lualine:
 
