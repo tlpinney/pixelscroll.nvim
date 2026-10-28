@@ -1,0 +1,44 @@
+*pixelscroll.txt*  Pixel-smooth trackpad scrolling in supporting terminals
+
+==============================================================================
+INTRODUCTION                                                   *pixelscroll*
+
+pixelscroll moves window text by fractions of a line while you scroll with a
+trackpad, in terminals that support smooth scroll regions (currently the
+"Ghostty Smooth" fork, https://github.com/tlpinney/ghostty). Elsewhere it
+does nothing. Requires Neovim 0.12 (|nvim_ui_send()|).
+
+Each normal window declares its text area as a region at the end of every
+redraw. The terminal shifts it by the trackpad's sub-line pixels and sends one
+wheel event per whole line, so 'mousescroll' is set to one line. A window's
+last row holds the next line and stays hidden until the text slides into it.
+
+==============================================================================
+SETUP                                                    *pixelscroll-setup*
+>lua
+    require("pixelscroll").setup()
+<
+Support is detected at startup with the `ESC _ smooth;? ESC \` query.
+
+                                                  *pixelscroll-SMOOTH_SCROLL*
+$SMOOTH_SCROLL      "1" forces pixelscroll on (needed inside herdr, which
+                    does not pass the query to the terminal), "0" off.
+
+==============================================================================
+COMMANDS                                              *pixelscroll-commands*
+
+                                                              *:PixelScroll*
+:PixelScroll [on|off|toggle]
+                    Turn pixel scrolling on or off; without an argument,
+                    toggle. Off restores 'mousescroll' to three lines.
+
+==============================================================================
+LUA                                                        *pixelscroll-lua*
+
+pixelscroll.status()                                  *pixelscroll.status()*
+                    Returns "≈ smooth" while active, else "".
+
+pixelscroll.set({on})                                    *pixelscroll.set()*
+                    Same as |:PixelScroll| on/off.
+
+ vim:tw=78:ts=8:ft=help:norl:
